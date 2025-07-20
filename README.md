@@ -149,16 +149,6 @@ g++ main.cpp -o banking
 * System crashes after debit phase.
 * Recovery rolls back debit from A001 since credit to A002 didn’t happen.
 
----
-
-## 🙋 Author
-
-* **Name**: Arun R.
-* **Department**: M.Sc. Software Systems
-* **Institution**: Coimbatore Institute of Technology
-* **Project**: DBMS Mini Project (Crash Recovery System)
-
----
 
 ## 📚 Concepts Demonstrated
 
