@@ -1,4 +1,4 @@
-# 🏦 Crash-Resilient Banking Transaction System
+# 🏦 TxLogger - Crash-Resilient Banking Transaction System
 
 ## 📖 Overview
 
