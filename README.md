@@ -13,12 +13,12 @@ This project simulates a **banking system** with a **crash-resilient transaction
 
 # 📌 Features
 
-## 🏦 Create and manage bank accounts  
-## 💳 Perform intra-bank and inter-bank transactions (transfer, credit, debit)  
-## ⚠️ Simulate system crashes at various transaction phases  
-## ♻️ Recover safely from crashes  
-## 📁 File-based logging and data persistence  
-## ⏱️ Timestamped transaction records with unique transaction IDs  
+#### 🏦 Create and manage bank accounts  
+#### 💳 Perform intra-bank and inter-bank transactions (transfer, credit, debit)  
+#### ⚠️ Simulate system crashes at various transaction phases  
+#### ♻️ Recover safely from crashes  
+#### 📁 File-based logging and data persistence  
+#### ⏱️ Timestamped transaction records with unique transaction IDs  
 
 ---
 
