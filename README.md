@@ -1,28 +1,28 @@
-# 🏦 TxLogger - Crash-Resilient Banking Transaction System
+# TxLogger - Crash-Resilient Banking Transaction System
 
-## 📖 Overview
+## Overview
 
 This project simulates a **banking system** with a **crash-resilient transaction mechanism** using a file-based data store. It handles:
 
-- ✅ Account management  
-- 🔄 Inter-bank transfers  
-- ⚠️ Crash simulation  
-- ♻️ Recovery from incomplete transactions using request/response logs  
+-  Account management  
+-  Inter-bank transfers  
+-  Crash simulation  
+-  Recovery from incomplete transactions using request/response logs  
 
 ---
 
-# 📌 Features
+# Features
 
-- 🏦 Create and manage bank accounts  
-- 💳 Perform intra-bank and inter-bank transactions (transfer, credit, debit)  
-- ⚠️ Simulate system crashes at various transaction phases  
-- ♻️ Recover safely from crashes  
-- 📁 File-based logging and data persistence  
-- ⏱️ Timestamped transaction records with unique transaction IDs  
+-  Create and manage bank accounts  
+-  Perform intra-bank and inter-bank transactions (transfer, credit, debit)  
+-  Simulate system crashes at various transaction phases  
+-  Recover safely from crashes  
+-  File-based logging and data persistence  
+-  Timestamped transaction records with unique transaction IDs  
 
 ---
 
-# 🛠️ Technologies Used
+# Technologies Used
 
 ### **Language**:  
 - C++
@@ -42,7 +42,7 @@ This project simulates a **banking system** with a **crash-resilient transaction
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 | File Name            | Purpose                                 |
 |---------------------|-----------------------------------------|
@@ -53,7 +53,7 @@ This project simulates a **banking system** with a **crash-resilient transaction
 
 ---
 
-## 🧪 Transaction Flow
+## Transaction Flow
 
 1. **Debit Phase**  
    Sender's balance is reduced and logged.
@@ -68,7 +68,7 @@ Each phase offers optional **crash simulation**, halting the system mid-transact
 
 ---
 
-## 🔄 Crash Recovery
+## Crash Recovery
 
 The recovery process:
 - Replays all valid responses (`*_respond.csv`) to restore correct balances.
@@ -77,7 +77,7 @@ The recovery process:
 
 ---
 
-## 🧮 Menu Options
+## Menu Options
 
 ```
 
@@ -94,7 +94,7 @@ The recovery process:
 
 ---
 
-## 📝 Sample Account Format
+## Sample Account Format
 
 Stored in `accounts_data.txt`:
 ```
@@ -109,7 +109,7 @@ Each line: `AccountID BankName Balance`
 
 ---
 
-## ⚠️ Crash Simulation Options
+## Crash Simulation Options
 
 During critical phases, you can simulate a crash:
 ```
@@ -125,7 +125,7 @@ These are used to test the system's durability and correctness of recovery logic
 
 ---
 
-## ✅ How to Run
+## How to Run
 
 1. **Compile:**
 ```bash
@@ -143,14 +143,14 @@ g++ main.cpp -o banking
 
 ---
 
-## 📌 Example Use Case
+## Example Use Case
 
 * User transfers ₹1000 from A001 (SBI) to A002 (ICICI).
 * System crashes after debit phase.
 * Recovery rolls back debit from A001 since credit to A002 didn’t happen.
 
 
-## 📚 Concepts Demonstrated
+## Concepts Demonstrated
 
 * Transaction logging
 * Crash recovery mechanisms
@@ -160,7 +160,7 @@ g++ main.cpp -o banking
 
 ---
 
-## 💡 Future Enhancements
+## Future Enhancements
 
 * Add password-protected accounts
 * GUI for better user interaction
