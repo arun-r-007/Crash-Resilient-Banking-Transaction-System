@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TxLogger</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(to top right, #dbeeff, #a4d4ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 800px;
+      width: 90%;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      text-align: center;
+      color: #004080;
+    }
+     h3 {
+      text-align: center;
+      color: #004080;
+    }
+    h2 {
+      color: #007acc;
+      margin-top: 2rem;
+    }
+    label {
+      display: block;
+      margin: 0.5rem auto 0.25rem;
+      text-align: center;
+      font-weight: bold;
+    }
+    input {
+      display: block;
+      margin: 0 auto;
+      padding: 0.4rem;
+      width: 60%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    button {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1.5rem;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #output {
+      text-align: center;
+      padding: 0.8rem;
+      background: #e7f3ff;
+      margin-top: 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.6rem;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="container">
+    <h1>TxLogger</h1>
+    <h3>Crash-Resilient Banking Transaction System Overview</h3>
+    <br>
+    <h2>Create Account</h2>
+    <label>Account ID (Numbers only)</label>
+    <input type="text" id="accID" />
+    <label>Bank Name</label>
+    <input type="text" id="bankName" />
+    <label>Initial Balance (Min ₹500)</label>
+    <input type="number" id="initBal" />
+    <button onclick="createAccount()">Create</button>
+
+    <h2>Transfer</h2>
+    <label>From Account ID</label>
+    <input type="text" id="fromID" />
+    <label>To Account ID</label>
+    <input type="text" id="toID" />
+    <label>Amount</label>
+    <input type="number" id="transferAmt" />
+    <button onclick="transfer()">Transfer</button>
+
+    <h2>Accounts</h2>
+    <button onclick="showAccounts()">Show All Accounts</button>
+    <div id="accountsTable"></div>
+
+    <h2>Transactions</h2>
+    <button onclick="showTransactions()">Show Transactions</button>
+    <div id="transactionsTable"></div>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const accounts = [];
+    const transactions = [];
+
+    function createAccount() {
+      const id = document.getElementById("accID").value.trim();
+      const bank = document.getElementById("bankName").value.trim();
+      const balance = parseInt(document.getElementById("initBal").value);
+
+      if (!/^[0-9]+$/.test(id)) {
+        alert("Account ID must be a number.");
+        return;
+      }
+      if (!id || !bank || isNaN(balance)) {
+        alert("Please enter valid inputs.");
+        return;
+      }
+      if (balance < 500) {
+        alert("Initial balance must be at least ₹500.");
+        return;
+      }
+      if (accounts.some(a => a.id === id)) {
+        alert("Account ID already exists.");
+        return;
+      }
+
+      accounts.push({ id, bankName: bank, balance });
+      document.getElementById("output").innerText = ` Account ${id} created.`;
+      document.getElementById("accID").value = "";
+      document.getElementById("bankName").value = "";
+      document.getElementById("initBal").value = "";
+      showAccounts();
+    }
+
+    function transfer() {
+      const from = document.getElementById("fromID").value.trim();
+      const to = document.getElementById("toID").value.trim();
+      const amt = parseInt(document.getElementById("transferAmt").value);
+
+      const sender = accounts.find(a => a.id === from);
+      const receiver = accounts.find(a => a.id === to);
+
+      if (!sender || !receiver || isNaN(amt) || amt <= 0) {
+        alert("Invalid account or amount.");
+        return;
+      }
+      if (sender.balance < amt) {
+        alert("Insufficient balance.");
+        return;
+      }
+
+      sender.balance -= amt;
+      receiver.balance += amt;
+
+      const txn = {
+        id: "TXN" + Date.now(),
+        from,
+        to,
+        amount: amt,
+        timestamp: new Date().toLocaleString()
+      };
+      transactions.push(txn);
+
+      document.getElementById("output").innerText = `Transferred ₹${amt} from ${from} to ${to}`;
+      document.getElementById("fromID").value = "";
+      document.getElementById("toID").value = "";
+      document.getElementById("transferAmt").value = "";
+      showAccounts();
+      showTransactions();
+    }
+
+    function showAccounts() {
+      let html = "<table><tr><th>Account ID</th><th>Bank</th><th>Balance</th></tr>";
+      for (let acc of accounts) {
+        html += `<tr><td>${acc.id}</td><td>${acc.bankName}</td><td>₹${acc.balance}</td></tr>`;
+      }
+      html += "</table>";
+      document.getElementById("accountsTable").innerHTML = html;
+    }
+
+    function showTransactions() {
+      if (transactions.length === 0) {
+        document.getElementById("transactionsTable").innerHTML = "<p>No transactions yet.</p>";
+        return;
+      }
+      let html = "<table><tr><th>Txn ID</th><th>From</th><th>To</th><th>Amount</th><th>Timestamp</th></tr>";
+      for (let txn of transactions) {
+        html += `<tr><td>${txn.id}</td><td>${txn.from}</td><td>${txn.to}</td><td>₹${txn.amount}</td><td>${txn.timestamp}</td></tr>`;
+      }
+      html += "</table>";
+      document.getElementById("transactionsTable").innerHTML = html;
+    }
+
+    // Canvas animation
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createParticles() {
+      particles = [];
+      for (let i = 0; i < 60; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 50 + 1,
+          dx: (Math.random() - 0.5) * 1.5,
+          dy: (Math.random() - 0.5) * 1.5
+        });
+      }
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    function moveParticles() {
+      particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+    }
+
+    function animateParticles() {
+      drawParticles();
+      moveParticles();
+      requestAnimationFrame(animateParticles);
+    }
+
+    resizeCanvas();
+    createParticles();
+    animateParticles();
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createParticles();
+    });
+  </script>
+</body>
+</html>
